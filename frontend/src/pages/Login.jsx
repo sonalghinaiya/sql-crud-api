@@ -3,10 +3,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -52,12 +54,22 @@ function Login() {
           <div>
             <label className="text-sm text-gray-200 block mb-2">Password</label>
 
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-white transition"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-300 rounded-lg px-4 py-3 pr-12 outline-none focus:ring-2 focus:ring-white transition"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           <button className="w-full bg-white text-black font-semibold py-3 rounded-lg hover:bg-gray-200 transition duration-300">
