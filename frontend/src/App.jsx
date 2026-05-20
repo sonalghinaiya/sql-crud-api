@@ -30,8 +30,23 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/task/add" element={<AddTask />} />
-        <Route path="/task/edit/:id" element={<EditTask />} />
+        <Route
+          path="/task/add"
+          element={
+            <ProtectedRoute>
+              <AddTask />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/task/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditTask />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
