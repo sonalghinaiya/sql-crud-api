@@ -1,8 +1,18 @@
 import db from "../config/db.js";
+import { todoSchema } from "../validations/todoValidation.js";
 
 export const createTodo = async (req, res) => {
   try {
-    const { title, description, status } = req.body;
+    const result = todoSchema.safeParse(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        errors: result.error.errors,
+      });
+    }
+
+    const { title, description, status } = result.data;
 
     const userId = req.user.id;
 
@@ -61,23 +71,37 @@ export const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { title, description, status } = req.body;
+    const result = todoSchema.safeParse(req.body);
 
-    const sql = "UPDATE todos SET title=?,description=?,status=? WHERE id=?";
-
-    db.query(sql, [title, description, status, id], (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          error: error.message,
-        });
-      }
-
-      res.json({
-        success: true,
-        message: "Todo Updated successfully",
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        errors: result.error.errors,
       });
-    });
+    }
+
+    const { title, description, status } = result.data;
+
+    const sql =
+      "UPDATE todos SET title=?,description=?,status=? WHERE id=? AND user_id=?";
+
+    db.query(
+      sql,
+      [title, description, status, id, req.user.id],
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            error: error.message,
+          });
+        }
+
+        res.json({
+          success: true,
+          message: "Todo Updated successfully",
+        });
+      },
+    );
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -90,9 +114,9 @@ export const deleteTodo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const sql = "DELETE FROM todos WHERE id=?";
+    const sql = "DELETE FROM todos WHERE id=? AND user_id=?";
 
-    db.query(sql, [id], (err, result) => {
+    db.query(sql, [id, req.user.id], (err, result) => {
       if (err) {
         return res.status(500).json({
           success: false,

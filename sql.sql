@@ -14,7 +14,7 @@ CREATE TABLE todos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255),
     description TEXT,
-    status VARCHAR(50),
+    status ENUM('pending', 'completed'),
     user_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
