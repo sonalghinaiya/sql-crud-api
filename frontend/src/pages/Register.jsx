@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { registerSchema } from "../validations/authValidation";
 
 function Register() {
   const [name, setName] = useState("");
@@ -15,6 +16,12 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const result = registerSchema.safeParse({ name, email, password });
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
+    }
 
     try {
       const res = await api.post("/auth/register", {

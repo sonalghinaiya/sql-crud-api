@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { loginSchema } from "../validations/authValidation";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,6 +15,12 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const result = loginSchema.safeParse({ email, password });
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
+    }
 
     try {
       const res = await api.post("/auth/login", {

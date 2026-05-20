@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaArrowLeft } from "react-icons/fa";
-import api from "../src/api/api";
+import api from "../api/api";
+import { taskSchema } from "../validations/todoValidation";
 
 function TaskForm({ taskId }) {
   const [title, setTitle] = useState("");
@@ -38,6 +39,18 @@ function TaskForm({ taskId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const result = taskSchema.safeParse({
+      title,
+      description,
+      status,
+    });
+
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+
+      return;
+    }
 
     if (loading) return;
     setLoading(true);
