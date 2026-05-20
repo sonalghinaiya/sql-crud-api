@@ -21,53 +21,72 @@ function Register() {
         password,
       });
       toast.success(res.data.message || "Register Successfully");
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white shadow-lg rounded-lg p-6"
-      >
-        <h1 className="text-2xl font-bold mb-5">Register</h1>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          className="w-full border p-3 mb-4 rounded"
-          onChange={(e) => setName(e.target.value)}
-        />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-gray-800 px-4">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl rounded-2xl p-8">
+        <h1 className="text-3xl font-bold text-white text-center mb-2">
+          Create Account 
+        </h1>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="w-full border p-3 mb-4 rounded"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <p className="text-gray-300 text-center mb-8">
+          Register to start managing your todos
+        </p>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full border p-3 mb-4 rounded"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="text-sm text-gray-200 block mb-2">Name</label>
 
-        <button className="w-full bg-black text-white p-3 rounded">
-          Register
-        </button>
-        <p className="text-center mt-4">
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-white transition"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-200 block mb-2">Email</label>
+
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-white transition"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-200 block mb-2">Password</label>
+
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full bg-white/10 border border-gray-500 text-white placeholder-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-white transition"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button className="w-full bg-white text-black font-semibold py-3 rounded-lg hover:bg-gray-200 transition duration-300">
+            Register
+          </button>
+        </form>
+
+        <p className="text-center text-gray-300 mt-6">
           Already have an account?
-          <Link to="/" className="text-gray-800 hover:underline ml-1">
+          <Link
+            to="/login"
+            className="text-white font-semibold hover:underline ml-1"
+          >
             Login
           </Link>
         </p>
-      </form>
+      </div>
     </div>
   );
 }
